@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="assets/socicon/css/styles.css">
 <link rel="stylesheet" href="assets/theme/css/style.css">
 <link rel="stylesheet" href="assets/gallery/style.css">
+<link rel="stylesheet" href="assets/gallery/alumni-gallery.css">
 <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
 
 
@@ -66,6 +67,8 @@
                 <a class="nav-link link text-primary display-4" href="index.html#work"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn" style="font-size: 20px;"></span>Produk</a>
               </li>
               <li class="nav-item"><a class="nav-link link text-primary display-4" href="index.html#contact-us"><span class="mbri-help mbr-iconfont mbr-iconfont-btn" style="font-size: 20px;"></span>Alamat</a>
+              </li>
+              <li class="nav-item"><a class="nav-link link text-primary display-4" href="index.html#foto-alumni"><span class="mbri-photos mbr-iconfont mbr-iconfont-btn" style="font-size: 20px;"></span>Foto Alumni</a>
               </li>
             </ul>
 
@@ -467,6 +470,71 @@
                 </div>
               </section>
 
+              <section class="alumni-gallery-section" id="foto-alumni">
+                <div class="container">
+                  
+                  <!-- Section Header -->
+                  <div class="row">
+                    <div class="col-12 text-center">
+                      <h2 class="mbr-section-title pb-2 mbr-fonts-style display-2 alumni-header-title">
+                        <strong>Galeri Foto Alumni</strong> MTs
+                      </h2>
+                      <p class="mbr-text mbr-fonts-style display-7 alumni-header-subtitle">
+                        Kumpulan dokumentasi, kenangan, dan momen kebersamaan alumni MTs dari berbagai kegiatan dan silaturahmi.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Filter / Selection Bar -->
+                  <div class="row justify-content-center mb-2">
+                    <div class="col-12 text-center">
+                      <div id="alumni-filter-bar" class="alumni-filter-bar"></div>
+                      <div class="d-flex justify-content-center align-items-center mb-4">
+                        <select id="alumni-album-select" class="alumni-filter-dropdown" aria-label="Pilih Album Kegiatan"></select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Albums Overview Grid (Default) -->
+                  <div id="alumni-albums-grid" class="row">
+                    <!-- Dynamic albums will be rendered here -->
+                  </div>
+
+                  <!-- Single Album Photo Grid View (Detail) -->
+                  <div id="alumni-detail-view" class="alumni-detail-view">
+                    <div class="alumni-detail-header">
+                      <div class="alumni-detail-info">
+                        <h3 id="alumni-detail-title">Nama Album</h3>
+                        <span id="alumni-detail-date">Tanggal Kegiatan</span>
+                      </div>
+                      <button type="button" id="alumni-back-btn" class="alumni-back-btn">
+                        <i class="mbri-arrow-prev mbr-iconfont" style="font-size: 0.9rem;"></i>
+                        <span>Kembali ke Semua Album</span>
+                      </button>
+                    </div>
+                    
+                    <div id="alumni-photo-grid" class="alumni-photo-grid">
+                      <!-- Dynamic album photos will be rendered here -->
+                    </div>
+                  </div>
+
+                </div>
+              </section>
+
+              <!-- Lightbox Modal -->
+              <div id="alumni-lightbox" class="alumni-lightbox" role="dialog" aria-modal="true">
+                <div class="alumni-lb-header">
+                  <div id="alumni-lb-info" class="alumni-lb-info">Info Album</div>
+                  <button type="button" id="alumni-lb-close" class="alumni-lb-close" aria-label="Tutup">&times;</button>
+                </div>
+                <div class="alumni-lb-content">
+                  <button type="button" id="alumni-lb-prev" class="alumni-lb-nav alumni-lb-prev" aria-label="Foto Sebelumnya">&#8249;</button>
+                  <img id="alumni-lb-image" class="alumni-lb-image" src="" alt="Foto Alumni">
+                  <button type="button" id="alumni-lb-next" class="alumni-lb-nav alumni-lb-next" aria-label="Foto Selanjutnya">&#8250;</button>
+                </div>
+                <div id="alumni-lb-counter" class="alumni-lb-counter">Foto 1 dari 10</div>
+              </div>
+
               <section once="" class="cid-qHP27eZr7r" id="footer">
 
                 <div class="container">
@@ -490,6 +558,9 @@
                         </li>
                         <li class="foot-menu-item mbr-fonts-style display-7">
                           <a class="text-white mbr-bold" href="index.html#contact-us">Alamat</a>
+                        </li>
+                        <li class="foot-menu-item mbr-fonts-style display-7">
+                          <a class="text-white mbr-bold" href="index.html#foto-alumni">Foto Alumni</a>
                         </li>
                       </ul>
                     </div>
@@ -520,6 +591,8 @@
         <script src="assets/theme/js/script.js"></script>
         <script src="assets/gallery/player.min.js"></script>
         <script src="assets/gallery/script.js"></script>
+        <script src="assets/gallery/alumni-data.js"></script>
+        <script src="assets/gallery/alumni-gallery.js"></script>
         <script src="assets/slidervideo/script.js"></script>
         <script src="assets/formoid/formoid.min.js"></script>
 
