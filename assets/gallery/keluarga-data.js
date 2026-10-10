@@ -102,7 +102,7 @@ const KELUARGA_ALBUMS = [
     },
     {
         "id": "hj-pasmi-binti-harjo-lesono",
-        "title": "Hj. Pasmi Binti Harjo Lesono",
+        "title": "Hj. Pasmi Binti Harjo Leksono Karsan",
         "role": "Nenek",
         "category": "Nenek",
         "status": "Almarhumah",
