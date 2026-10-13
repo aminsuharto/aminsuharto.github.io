@@ -293,6 +293,49 @@
             border-color: transparent;
         }
 
+        .photo-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fbf7ef 0%, #eee4d1 100%);
+            color: #8b4513;
+            padding: 12px;
+            text-align: center;
+            transition: transform 0.4s ease;
+        }
+        .family-card:hover .photo-placeholder {
+            transform: scale(1.04);
+        }
+        .photo-placeholder svg {
+            width: 44px;
+            height: 44px;
+            stroke: #b8860b;
+            margin-bottom: 6px;
+            opacity: 0.85;
+        }
+        .photo-placeholder span {
+            font-size: 0.72rem;
+            color: #8b4513;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .relation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(140px, 180px));
+            gap: 14px;
+            width: 100%;
+        }
+        .relation-grid-single {
+            grid-template-columns: minmax(140px, 180px);
+        }
+
         .card-footer {
             background: rgba(255, 248, 240, 0.6);
             padding: 20px;
@@ -309,6 +352,14 @@
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 12px;
             }
+            .relation-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px;
+            }
+            .relation-grid-single {
+                grid-template-columns: repeat(2, 1fr) !important;
+                max-width: 180px;
+            }
             .card-body {
                 padding: 10px 20px 35px 20px;
             }
@@ -317,7 +368,7 @@
             }
             .info-label {
                 width: 100%;
-                margin-bottom: 4px;
+                margin-bottom: 8px;
             }
             .photo-container {
                 width: 240px;
@@ -328,6 +379,14 @@
             .family-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px;
+            }
+            .relation-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px;
+            }
+            .relation-grid-single {
+                grid-template-columns: 1fr !important;
+                max-width: 160px;
             }
             .person-name {
                 font-size: 0.85rem;
@@ -364,30 +423,77 @@
             <div class="info-group">
                 <div class="info-label">Nama Orang Tua</div>
                 <div class="info-value">
-                    <ul class="children-list">
-                        <li>
-                            <a href="slamet_mustari.html" style="color: inherit; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
-                                <span>Ayah: <strong>Slamet Mustari</strong></span>
-                                <span style="font-size: 0.85rem; color: #b8860b; font-weight: 600;">Lihat Biodata &rarr;</span>
+                    <div class="relation-grid">
+                        <!-- Ayah: Slamet Mustari -->
+                        <div class="family-card">
+                            <a href="slamet_mustari.html" class="family-card-link" title="Buka Biodata Ayah: Slamet Mustari">
+                                <div class="photo-frame">
+                                    <div class="photo-placeholder">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>(Belum ada foto)</span>
+                                    </div>
+                                    <div class="photo-overlay">
+                                        <span>Lihat Biodata &rarr;</span>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <div class="person-name">Slamet Mustari</div>
+                                    <div class="person-role">Ayah</div>
+                                    <div class="person-btn">Lihat Biodata &rarr;</div>
+                                </div>
                             </a>
-                        </li>
-                        <li>
-                            <a href="markamah.html" style="color: inherit; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
-                                <span>Ibu: <strong>Markamah</strong></span>
-                                <span style="font-size: 0.85rem; color: #b8860b; font-weight: 600;">Lihat Biodata &rarr;</span>
+                        </div>
+
+                        <!-- Ibu: Markamah -->
+                        <div class="family-card">
+                            <a href="markamah.html" class="family-card-link" title="Buka Biodata Ibu: Markamah">
+                                <div class="photo-frame">
+                                    <div class="photo-placeholder">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>(Belum ada foto)</span>
+                                    </div>
+                                    <div class="photo-overlay">
+                                        <span>Lihat Biodata &rarr;</span>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <div class="person-name">Markamah</div>
+                                    <div class="person-role">Ibu</div>
+                                    <div class="person-btn">Lihat Biodata &rarr;</div>
+                                </div>
                             </a>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="info-group">
                 <div class="info-label">Nama Istri</div>
                 <div class="info-value">
-                    <a href="sumisih.html" style="color: inherit; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
-                        <span>Sumisih</span>
-                        <span style="font-size: 0.85rem; color: #b8860b;">(Lihat Biodata &rarr;)</span>
-                    </a>
+                    <div class="relation-grid relation-grid-single">
+                        <!-- Istri: Sumisih -->
+                        <div class="family-card">
+                            <a href="sumisih.html" class="family-card-link" title="Buka Biodata Istri: Sumisih">
+                                <div class="photo-frame">
+                                    <img src="sumisih.jpg" alt="Sumisih (Istri)">
+                                    <div class="photo-overlay">
+                                        <span>Lihat Biodata &rarr;</span>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <div class="person-name">Sumisih</div>
+                                    <div class="person-role">Istri</div>
+                                    <div class="person-btn">Lihat Biodata &rarr;</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
