@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -40,7 +40,7 @@
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             width: 100%;
-            max-width: 700px;
+            max-width: 860px;
             border-radius: 24px;
             box-shadow: 0 30px 60px rgba(139, 69, 19, 0.15), 0 0 0 1px rgba(218, 165, 32, 0.4);
             overflow: hidden;
@@ -133,6 +133,200 @@
         .children-list li:last-child {
             margin-bottom: 0;
         }
+
+        /* Seksi Foto Anak / Cucu */
+        .info-section {
+            margin-top: 26px;
+            padding-top: 22px;
+            border-top: 1px dashed rgba(184, 134, 11, 0.35);
+        }
+        .section-header-box {
+            margin-bottom: 16px;
+        }
+        .section-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #781c1c;
+            background: rgba(184, 134, 11, 0.16);
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(184, 134, 11, 0.35);
+            margin-bottom: 6px;
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #781c1c;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-subtitle {
+            font-size: 0.88rem;
+            color: #8b4513;
+            margin-top: 4px;
+        }
+
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+            width: 100%;
+        }
+
+        .family-card {
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(218, 165, 32, 0.35);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.06);
+            position: relative;
+        }
+        .family-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(120, 28, 28, 0.16), 0 0 0 2px rgba(184, 134, 11, 0.55);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .family-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .photo-frame {
+            position: relative;
+            width: 100%;
+            padding-top: 118%; /* ~4:5 portrait ratio */
+            overflow: hidden;
+            background: #f5efe6;
+        }
+        .photo-frame img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            transition: transform 0.4s ease;
+        }
+        .family-card:hover .photo-frame img {
+            transform: scale(1.08);
+        }
+
+        .photo-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(120, 28, 28, 0.8) 0%, rgba(184, 134, 11, 0.25) 55%, transparent 100%);
+            opacity: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+        .family-card:hover .photo-overlay {
+            opacity: 1;
+        }
+        .photo-overlay span {
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 3px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .photo-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fbf7ef 0%, #eee4d1 100%);
+            color: #8b4513;
+            padding: 12px;
+            text-align: center;
+            transition: transform 0.4s ease;
+        }
+        .family-card:hover .photo-placeholder {
+            transform: scale(1.04);
+        }
+        .photo-placeholder svg {
+            width: 44px;
+            height: 44px;
+            stroke: #b8860b;
+            margin-bottom: 6px;
+            opacity: 0.85;
+        }
+        .photo-placeholder span {
+            font-size: 0.72rem;
+            color: #8b4513;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .card-info {
+            padding: 10px 8px 12px 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        .person-name {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #2b1d1d;
+            line-height: 1.3;
+            margin-bottom: 3px;
+            transition: color 0.2s ease;
+        }
+        .family-card:hover .person-name {
+            color: #781c1c;
+        }
+        .person-role {
+            font-size: 0.72rem;
+            color: #8b4513;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .person-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #781c1c;
+            background: rgba(184, 134, 11, 0.12);
+            border: 1px solid rgba(184, 134, 11, 0.3);
+            padding: 3px 8px;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+        }
+        .family-card:hover .person-btn {
+            background: linear-gradient(135deg, #781c1c 0%, #b8860b 100%);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
         .card-footer {
             background: rgba(255, 248, 240, 0.6);
             padding: 20px;
@@ -142,6 +336,39 @@
             border-top: 1px solid rgba(184, 134, 11, 0.25);
             letter-spacing: 1.5px;
             text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .family-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px;
+            }
+            .card-body {
+                padding: 10px 20px 35px 20px;
+            }
+            .info-group {
+                flex-direction: column;
+            }
+            .info-label {
+                width: 100%;
+                margin-bottom: 4px;
+            }
+            .photo-container {
+                width: 240px;
+                height: 300px;
+            }
+        }
+        @media (max-width: 480px) {
+            .family-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px;
+            }
+            .person-name {
+                font-size: 0.85rem;
+            }
+            .section-title {
+                font-size: 1.15rem;
+            }
         }
     </style>
 </head>
@@ -198,15 +425,91 @@
                 <div class="info-value">-</div>
             </div>
 
-            <div class="info-group">
-                <div class="info-label">Nama Anak</div>
-                <div class="info-value">
-                    <ul class="children-list">
-                        <li><a href="muslikah.html" style="color: inherit; text-decoration: none; display: flex; justify-content: space-between; align-items: center;"><span>Muslikah</span><span style="font-size: 0.85rem; color: #b8860b; font-weight: 600;">Lihat Biodata &rarr;</span></a></li>
-                        <li><a href="muhrori.html" style="color: inherit; text-decoration: none; display: flex; justify-content: space-between; align-items: center;"><span>Muhrori</span><span style="font-size: 0.85rem; color: #b8860b; font-weight: 600;">Lihat Biodata &rarr;</span></a></li>
-                        <li><a href="siti_marwiyah.html" style="color: inherit; text-decoration: none; display: flex; justify-content: space-between; align-items: center;"><span>Siti Marwiyah</span><span style="font-size: 0.85rem; color: #b8860b; font-weight: 600;">Lihat Biodata &rarr;</span></a></li>
-                        <li><a href="yahya.html" style="color: inherit; text-decoration: none; display: flex; justify-content: space-between; align-items: center;"><span>Yahya</span><span style="font-size: 0.85rem; color: #b8860b; font-weight: 600;">Lihat Biodata &rarr;</span></a></li>
-                    </ul>
+            <!-- SEKSI NAMA ANAK / CUCU HJ. PASMI -->
+            <div class="info-section">
+                <div class="section-header-box">
+                    <span class="section-badge">Keturunan &amp; Cucu Hj. Pasmi</span>
+                    <h3 class="section-title">
+                        <span>Nama Anak</span>
+                        <span style="font-size: 0.9rem; color: #b8860b; font-weight: 600;">(4 Bersaudara)</span>
+                    </h3>
+                    <p class="section-subtitle">Klik foto atau nama anak untuk membuka halaman biodata lengkap.</p>
+                </div>
+
+                <div class="family-grid">
+                    <!-- Muslikah -->
+                    <div class="family-card">
+                        <a href="muslikah.html" class="family-card-link" title="Buka Biodata Muslikah">
+                            <div class="photo-frame">
+                                <img src="muslikah.jpg" alt="Muslikah Binti Karsipin">
+                                <div class="photo-overlay">
+                                    <span>Lihat Biodata &rarr;</span>
+                                </div>
+                            </div>
+                            <div class="card-info">
+                                <div class="person-name">Muslikah</div>
+                                <div class="person-role">Anak ke-1</div>
+                                <div class="person-btn">Lihat Biodata &rarr;</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Muhrori -->
+                    <div class="family-card">
+                        <a href="muhrori.html" class="family-card-link" title="Buka Biodata Muhrori">
+                            <div class="photo-frame">
+                                <img src="muhrori.jpg" alt="Muhrori Bin Karsipin">
+                                <div class="photo-overlay">
+                                    <span>Lihat Biodata &rarr;</span>
+                                </div>
+                            </div>
+                            <div class="card-info">
+                                <div class="person-name">Muhrori</div>
+                                <div class="person-role">Anak ke-2</div>
+                                <div class="person-btn">Lihat Biodata &rarr;</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Siti Marwiyah -->
+                    <div class="family-card">
+                        <a href="siti_marwiyah.html" class="family-card-link" title="Buka Biodata Siti Marwiyah">
+                            <div class="photo-frame">
+                                <img src="siti.jpg" alt="Siti Marwiyah Binti Karsipin">
+                                <div class="photo-overlay">
+                                    <span>Lihat Biodata &rarr;</span>
+                                </div>
+                            </div>
+                            <div class="card-info">
+                                <div class="person-name">Siti Marwiyah</div>
+                                <div class="person-role">Anak ke-3</div>
+                                <div class="person-btn">Lihat Biodata &rarr;</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Yahya -->
+                    <div class="family-card">
+                        <a href="yahya.html" class="family-card-link" title="Buka Biodata Yahya">
+                            <div class="photo-frame">
+                                <div class="photo-placeholder">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <span>Foto Belum Ada</span>
+                                </div>
+                                <div class="photo-overlay">
+                                    <span>Lihat Biodata &rarr;</span>
+                                </div>
+                            </div>
+                            <div class="card-info">
+                                <div class="person-name">Yahya</div>
+                                <div class="person-role">Anak ke-4</div>
+                                <div class="person-btn">Lihat Biodata &rarr;</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -219,3 +522,4 @@
 
 </body>
 </html>
+
