@@ -11,6 +11,7 @@
             --secondary-emerald: #065f46;
             --accent-gold: #d97706;
             --light-gold: #fef3c7;
+            --bg-cream: #f9fafb;
             --card-bg: #ffffff;
             --text-main: #1f2937;
             --text-muted: #4b5563;
@@ -94,6 +95,7 @@
             font-size: 0.85rem;
             cursor: pointer;
             text-align: center;
+            width: 130px;
         }
 
         .controls-bar {
@@ -246,6 +248,7 @@
             font-size: 0.85rem;
             color: var(--text-main);
             text-align: center;
+            width: 130px;
         }
 
         #loadingOverlay {
@@ -270,7 +273,7 @@
         <!-- Header -->
         <div class="header">
             <div class="bismillah">﷽</div>
-            <div class="title">Program Tilawah Al-Quran Alumni MTs Al Uswah<br>Putaran ke-124</div>
+            <div class="title" id="titleText">Program Tilawah Al-Quran Alumni MTs Al Uswah<br>Putaran ke-124</div>
             <div class="subtitle-container">
                 Mulai 
                 <input type="text" id="startDateInput" class="editable-date" value="12 Oktober 2026" onchange="syncToServer()">
@@ -283,8 +286,8 @@
                 <span id="statsText">Selesai: 0 dari 30</span>
                 <span id="rotationInfo" style="font-weight: 600; color: var(--accent-gold);">Online Sync</span>
             </div>
-            <button class="btn-action" onclick="rotateList()">🔄 Rotasi</button>
-            <button class="btn-action" onclick="reverseRotateList()">↩️ Reverse</button>
+            <button class="btn-action" onclick="rotateList()">🔄 Rotasi (+1)</button>
+            <button class="btn-action" onclick="reverseRotateList()">↩️ Reverse (-1)</button>
             <button class="btn-action btn-reset" onclick="resetData()">♻️ Reset</button>
         </div>
 
@@ -296,18 +299,57 @@
         <!-- Footer -->
         <div class="footer">
             Laporan kami tunggu sampai tanggal 
-            <input type="text" id="endDateInput" class="editable-footer-date" value="22 Oktober 2026" onchange="syncToServer()" style="width: 140px;">
+            <input type="text" id="endDateInput" class="editable-footer-date" value="22 Oktober 2026" onchange="syncToServer()">
             <br>
             Doa akan dibacakan oleh <b id="doaPerson">-</b>
         </div>
     </div>
 
     <script>
-        // GANTI URL INI DENGAN WEB APP URL DARI GOOGLE APPS SCRIPT ANDA
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKuj6lW38sfHWpTbAZq0A4yVVZBMmODt9f10FTYouORH-OQ7IMmpnqiJbIc8fKLqrgJg/exec?action=get";
 
         let members = [];
-        let metaData = { startDate: "12 Oktober 2026", endDate: "22 Oktober 2026" };
+        let metaData = { 
+            round: 124,
+            startDate: "12 Oktober 2026", 
+            endDate: "22 Oktober 2026" 
+        };
+
+        // Helper untuk parse tanggal Indonesia & tambah/kurang hari
+        const months = {
+            "januari": 0, "februari": 1, "maret": 2, "april": 3, "mei": 4, "juni": 5,
+            "juli": 6, "agustus": 7, "september": 8, "oktober": 9, "november": 10, "desember": 11
+        };
+
+        function parseIndoDate(dateStr) {
+            try {
+                let parts = dateStr.trim().split(" ");
+                if (parts.length >= 3) {
+                    let day = parseInt(parts[0]);
+                    let monthName = parts[1].toLowerCase();
+                    let year = parseInt(parts[2]);
+                    let month = months[monthName] !== undefined ? months[monthName] : 0;
+                    return new Date(year, month, day);
+                }
+            } catch(e) {}
+            return new Date();
+        }
+
+        function formatIndoDate(dateObj) {
+            let day = dateObj.getDate();
+            let monthNames = ["Oktober", "November", "Desember", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September"];
+            // Simplified for Indonesian month mapping or use standard array
+            let monthsArr = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            let monthName = monthsArr[dateObj.getMonth()];
+            let year = dateObj.getFullYear();
+            return `${day} ${monthName} ${year}`;
+        }
+
+        function addDays(dateStr, days) {
+            let d = parseIndoDate(dateStr);
+            d.setDate(d.getDate() + days);
+            return formatIndoDate(d);
+        }
 
         async function loadData() {
             document.getElementById('loadingOverlay').style.display = 'flex';
@@ -316,10 +358,9 @@
                 let data = await response.json();
                 members = data.members;
                 metaData = data.meta;
+                if(metaData.round === undefined) metaData.round = 124;
                 
-                document.getElementById('startDateInput').value = metaData.startDate;
-                document.getElementById('endDateInput').value = metaData.endDate;
-                renderList();
+                updateUI();
             } catch (err) {
                 alert("Gagal memuat data dari server. Pastikan URL Google Apps Script benar.");
             }
@@ -342,10 +383,18 @@
                 console.error(err);
             }
             document.getElementById('loadingOverlay').style.display = 'none';
-            renderList();
+            updateUI();
         }
 
-        function renderList() {
+        function updateUI() {
+            // Update Title Putaran
+            document.getElementById('titleText').innerHTML = `Program Tilawah Al-Quran Alumni MTs Al Uswah<br>Putaran ke-${metaData.round}`;
+            
+            // Update Inputs
+            document.getElementById('startDateInput').value = metaData.startDate;
+            document.getElementById('endDateInput').value = metaData.endDate;
+
+            // Render list
             const container = document.getElementById('memberList');
             container.innerHTML = '';
             let completedCount = 0;
@@ -378,37 +427,42 @@
 
         async function toggleStatus(index) {
             members[index].done = !members[index].done;
-            renderList();
+            updateUI();
             await syncToServer();
         }
 
         async function rotateList() {
-            if (confirm("Rotasi Putaran: No. 30 akan naik menjadi No. 1?")) {
+            if (confirm(`Rotasi ke Putaran berikutnya (Putaran ke-${metaData.round + 1}) dan tanggal maju 14 hari?`)) {
                 const last = members.pop();
                 members.unshift(last);
-                renderList();
+                metaData.round += 1;
+                metaData.startDate = addDays(metaData.startDate, 14);
+                metaData.endDate = addDays(metaData.endDate, 14);
+                updateUI();
                 await syncToServer();
             }
         }
 
         async function reverseRotateList() {
-            if (confirm("Reverse Putaran: Mengembalikan posisi rotasi sebelumnya?")) {
+            if (confirm(`Reverse ke Putaran sebelumnya (Putaran ke-${metaData.round - 1}) dan tanggal mundur 14 hari?`)) {
                 const first = members.shift();
                 members.push(first);
-                renderList();
+                metaData.round -= 1;
+                metaData.startDate = addDays(metaData.startDate, -14);
+                metaData.endDate = addDays(metaData.endDate, -14);
+                updateUI();
                 await syncToServer();
             }
         }
 
         async function resetData() {
-            if (confirm("Reset: Mengubah semua status tugas menjadi BELUM SELESAI?")) {
+            if (confirm("Reset: Mengubah semua status tugas anggota menjadi BELUM SELESAI?")) {
                 members.forEach(m => m.done = false);
-                renderList();
+                updateUI();
                 await syncToServer();
             }
         }
 
-        // Load saat pertama kali buka
         loadData();
     </script>
 </body>
