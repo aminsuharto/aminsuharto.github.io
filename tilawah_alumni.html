@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tilawah Al-Quran Alumnus MTs Al-Uswah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-emerald: #047857;
+            --secondary-emerald: #065f46;
+            --accent-gold: #d97706;
+            --light-gold: #fef3c7;
+            --bg-cream: #f9fafb;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.1), 0 8px 10px -6px rgba(4, 120, 87, 0.1);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-emerald), var(--secondary-emerald));
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #d97706, #fbbf24);
+        }
+
+        .bismillah {
+            font-family: 'Amiri', serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: #fef3c7;
+            letter-spacing: 1px;
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .subtitle-container {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            font-weight: 400;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .editable-date {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px dashed rgba(255, 255, 255, 0.6);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .editable-date:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #fbbf24;
+        }
+
+        .controls-bar {
+            padding: 14px 20px;
+            background: #f0fdf4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .stats {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--secondary-emerald);
+            width: 100%;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-action {
+            background: var(--primary-emerald);
+            color: white;
+            border: none;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-action:hover {
+            background: var(--secondary-emerald);
+        }
+
+        .btn-reset {
+            background: #ef4444;
+        }
+        .btn-reset:hover {
+            background: #dc2626;
+        }
+
+        .list-container {
+            padding: 16px 20px;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .list-item:hover {
+            background: #f8fafc;
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+
+        /* Status: Selesai */
+        .list-item.completed {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+        }
+
+        .list-item.completed .number-badge {
+            background: #d1fae5;
+            color: var(--secondary-emerald);
+        }
+
+        .list-item.completed .member-name {
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        /* Status: Belum Selesai (Warna Merah Lembut / Red Alert) */
+        .list-item.pending {
+            background: #fff5f5;
+            border-color: #fed7d7;
+        }
+
+        .list-item.pending .number-badge {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .list-item.pending .member-name {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .number-badge {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            min-width: 38px;
+            text-align: center;
+        }
+
+        .member-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .status-icon {
+            font-size: 1.25rem;
+            transition: transform 0.2s;
+        }
+
+        .list-item:active .status-icon {
+            transform: scale(1.2);
+        }
+
+        .footer {
+            background: #f8fafc;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .footer b {
+            color: var(--text-main);
+        }
+
+        .editable-footer-date {
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            text-align: center;
+        }
+        .editable-footer-date:focus {
+            outline: none;
+            border-color: var(--primary-emerald);
+        }
+
+        /* Custom Scrollbar */
+        .list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .list-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="bismillah">﷽</div>
+            <div class="title">Program Tilawah Al-Quran Alumni MTs Al Uswah<br>Putaran ke-124</div>
+            <div class="subtitle-container">
+                Mulai 
+                <input type="text" id="startDateInput" class="editable-date" value="12 Oktober 2026" onchange="saveMetadata()">
+            </div>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="controls-bar">
+            <div class="stats">
+                <span id="statsText">Selesai: 0 dari 30</span>
+                <span id="rotationInfo" style="font-weight: 600; color: var(--accent-gold);">Putaran Normal</span>
+            </div>
+            <button class="btn-action" onclick="rotateList()" title="No. 30 naik ke No. 1">🔄 Rotasi</button>
+            <button class="btn-action" onclick="reverseRotateList()" title="Kembalikan rotasi sebelumnya">↩️ Reverse</button>
+            <button class="btn-action btn-reset" onclick="resetData()" title="Set semua belum selesai">♻️ Reset</button>
+        </div>
+
+        <!-- List Anggota -->
+        <div class="list-container" id="memberList">
+            <!-- JavaScript will render items here -->
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Laporan kami tunggu sampai tanggal 
+            <input type="text" id="endDateInput" class="editable-footer-date" value="22 Oktober 2026" onchange="saveMetadata()" style="width: 140px;">
+            <br>
+            Doa akan dibacakan oleh <b id="doaPerson">-</b>
+        </div>
+    </div>
+
+    <script>
+        // Data awal sesuai input (tanpa angka 30 di depan nama Munawaroh)
+        const initialData = [
+            { id: 1, name: "B.Khotimah", done: false },
+            { id: 2, name: "P.Rozi", done: false },
+            { id: 3, name: "B.hj Rahmawati", done: true },
+            { id: 4, name: "B.Suwartini", done: true },
+            { id: 5, name: "B.Hidayah", done: true },
+            { id: 6, name: "p.Slamet", done: true },
+            { id: 7, name: "P.Akip", done: false },
+            { id: 8, name: "P.Kusdi", done: false },
+            { id: 9, name: "P.Hisam", done: false },
+            { id: 10, name: "P.Badrun", done: true },
+            { id: 11, name: "B.Istianah", done: true },
+            { id: 12, name: "B.Wahyuni", done: true },
+            { id: 13, name: "B.Zumrotun", done: false },
+            { id: 14, name: "H.Nurofik", done: true },
+            { id: 15, name: "B.Eni mufti", done: true },
+            { id: 16, name: "P.Keri", done: false },
+            { id: 17, name: "B.Hj Munafiah", done: true },
+            { id: 18, name: "B.Nurdiyanti", done: false },
+            { id: 19, name: "B.Eni Mujiati", done: false },
+            { id: 20, name: "B.Sofiati", done: true },
+            { id: 21, name: "B.Masitoh", done: true },
+            { id: 22, name: "B.Saidah", done: true },
+            { id: 23, name: "p.Aldakori", done: false },
+            { id: 24, name: "B.Alkomah", done: true },
+            { id: 25, name: "B.Istianah", done: true },
+            { id: 26, name: "B.Pujiati", done: false },
+            { id: 27, name: "B.Jumar'ah", done: false },
+            { id: 28, name: "P.Purwandi", done: true },
+            { id: 29, name: "P.Pandono", done: true },
+            { id: 30, name: "B.Munawaroh", done: true }
+        ];
+
+        // Load data dari localStorage jika ada
+        let members = JSON.parse(localStorage.getItem('tilawah_members_v2')) || initialData;
+        
+        // Load tanggal fleksibel
+        let metaData = JSON.parse(localStorage.getItem('tilawah_meta_v2')) || {
+            startDate: "12 Oktober 2026",
+            endDate: "22 Oktober 2026"
+        };
+
+        document.getElementById('startDateInput').value = metaData.startDate;
+        document.getElementById('endDateInput').value = metaData.endDate;
+
+        function saveData() {
+            localStorage.setItem('tilawah_members_v2', JSON.stringify(members));
+        }
+
+        function saveMetadata() {
+            metaData.startDate = document.getElementById('startDateInput').value;
+            metaData.endDate = document.getElementById('endDateInput').value;
+            localStorage.setItem('tilawah_meta_v2', JSON.stringify(metaData));
+        }
+
+        function renderList() {
+            const container = document.getElementById('memberList');
+            container.innerHTML = '';
+
+            let completedCount = 0;
+
+            members.forEach((member, index) => {
+                if (member.done) completedCount++;
+
+                const item = document.createElement('div');
+                // Beri kelas 'completed' jika selesai, atau 'pending' (merah) jika belum
+                item.className = `list-item ${member.done ? 'completed' : 'pending'}`;
+                item.onclick = () => toggleStatus(index);
+
+                // Format nomor dua digit (01, 02, dst)
+                const formattedNum = String(index + 1).padStart(2, '0');
+
+                item.innerHTML = `
+                    <div class="member-info">
+                        <span class="number-badge">${formattedNum}</span>
+                        <span class="member-name">${member.name}</span>
+                    </div>
+                    <div class="status-icon">
+                        ${member.done ? '🕋' : '❌'}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+
+            // Update statistik
+            document.getElementById('statsText').innerText = `Selesai: ${completedCount} dari 30`;
+
+            // Update pembaca doa (selalu nomor 30 di index 29, TANPA ANGKA di depan nama)
+            const doaName = members.length > 0 ? members[members.length - 1].name : '-';
+            document.getElementById('doaPerson').innerText = doaName;
+        }
+
+        function toggleStatus(index) {
+            members[index].done = !members[index].done;
+            saveData();
+            renderList();
+        }
+
+        function rotateList() {
+            if (confirm("Rotasi Putaran: No. 30 akan naik menjadi No. 1, dan nomor lainnya bergeser ke bawah?")) {
+                const last = members.pop();
+                members.unshift(last);
+                saveData();
+                renderList();
+            }
+        }
+
+        function reverseRotateList() {
+            if (confirm("Reverse Putaran: Mengembalikan posisi rotasi sebelumnya (No. 1 turun menjadi No. 30)?")) {
+                const first = members.shift();
+                members.push(first);
+                saveData();
+                renderList();
+            }
+        }
+
+        function resetData() {
+            if (confirm("Reset: Mengubah semua status tugas anggota menjadi BELUM SELESAI?")) {
+                members.forEach(m => m.done = false);
+                saveData();
+                renderList();
+            }
+        }
+
+        // Render pertama kali
+        renderList();
+    </script>
+</body>
+</html>
