@@ -342,7 +342,39 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKuj6lW38sfHWpTbAZq0A4yVVZBMmODt9f10FTYouORH-OQ7IMmpnqiJbIc8fKLqrgJg/exec";
         const SECRET_TOKEN = "KODE_RAHASIA_ANDA_123";
 
-        let members = [];
+        let members = [
+            { "name": "B.Munawaroh", "done": true },
+            { "name": "B.Khotimah", "done": true },
+            { "name": "P.Rozi", "done": true },
+            { "name": "B.hj Rahmawati", "done": true },
+            { "name": "B.Suwartini", "done": true },
+            { "name": "B.Hidayah", "done": true },
+            { "name": "p.Slamet", "done": false },
+            { "name": "P.Akip", "done": false },
+            { "name": "P.Kusdi", "done": false },
+            { "name": "P.Hisam", "done": false },
+            { "name": "P.Badrun", "done": false },
+            { "name": "B.Istianah", "done": false },
+            { "name": "B.Wahyuni", "done": false },
+            { "name": "B.Zumrotun", "done": false },
+            { "name": "H.Nurofik", "done": false },
+            { "name": "B.Eni mufti", "done": false },
+            { "name": "P.Keri", "done": false },
+            { "name": "B.Hj Munafiah", "done": false },
+            { "name": "B.Nurdiyanti", "done": false },
+            { "name": "B.Eni Mujiati", "done": false },
+            { "name": "B.Sofiati", "done": false },
+            { "name": "B.Masitoh", "done": false },
+            { "name": "B.Saidah", "done": false },
+            { "name": "p.Aldakori", "done": false },
+            { "name": "B.Alkomah", "done": false },
+            { "name": "B.Istianah", "done": false },
+            { "name": "B.Pujiati", "done": false },
+            { "name": "B.Jumar'ah", "done": false },
+            { "name": "P.Purwandi", "done": false },
+            { "name": "P.Pandono", "done": false }
+        ];
+
         let metaData = { 
             round: 125,
             startDate: "24 Oktober 2026", 
@@ -388,13 +420,16 @@
             try {
                 let response = await fetch(SCRIPT_URL + "?action=get");
                 let data = await response.json();
-                members = data.members;
-                metaData = data.meta;
+                if (data && Array.isArray(data.members) && data.members.length > 0) {
+                    members = data.members;
+                    if (data.meta) metaData = data.meta;
+                }
                 if (metaData.round === undefined) metaData.round = 125;
                 
                 updateUI();
             } catch (err) {
-                alert("Gagal memuat data dari server. Pastikan URL Google Apps Script benar.");
+                console.error("Gagal memuat data dari server:", err);
+                updateUI();
             }
             document.getElementById('loadingOverlay').style.display = 'none';
         }
