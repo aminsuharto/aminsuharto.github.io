@@ -340,6 +340,7 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKuj6lW38sfHWpTbAZq0A4yVVZBMmODt9f10FTYouORH-OQ7IMmpnqiJbIc8fKLqrgJg/exec";
+        const SECRET_TOKEN = "KODE_RAHASIA_ANDA_123";
 
         let members = [];
         let metaData = { 
@@ -408,7 +409,12 @@
                     method: "POST",
                     mode: "no-cors",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ action: "save", members: members, meta: metaData })
+                    body: JSON.stringify({ 
+                        action: "save", 
+                        token: SECRET_TOKEN, 
+                        members: members, 
+                        meta: metaData 
+                    })
                 });
             } catch (err) {
                 console.error(err);
