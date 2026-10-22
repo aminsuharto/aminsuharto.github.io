@@ -339,8 +339,7 @@
     </div>
 
     <script>
-        const DATA_URL = "data.json";
-        const SAVE_URL = "save.php";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKuj6lW38sfHWpTbAZq0A4yVVZBMmODt9f10FTYouORH-OQ7IMmpnqiJbIc8fKLqrgJg/exec";
 
         let members = [];
         let metaData = { 
@@ -386,8 +385,7 @@
         async function loadData() {
             document.getElementById('loadingOverlay').style.display = 'flex';
             try {
-                let response = await fetch(DATA_URL + "?t=" + Date.now());
-                if (!response.ok) throw new Error("Gagal mengambil data.json");
+                let response = await fetch(SCRIPT_URL + "?action=get");
                 let data = await response.json();
                 members = data.members;
                 metaData = data.meta;
@@ -395,8 +393,7 @@
                 
                 updateUI();
             } catch (err) {
-                console.error("Gagal memuat data dari data.json:", err);
-                alert("Gagal memuat data dari data.json. Pastikan halaman dibuka melalui web server (misal http://localhost/amins/tadarus.html).");
+                alert("Gagal memuat data dari server. Pastikan URL Google Apps Script benar.");
             }
             document.getElementById('loadingOverlay').style.display = 'none';
         }
@@ -405,21 +402,17 @@
             metaData.startDate = document.getElementById('startDateInput').value;
             metaData.endDate = document.getElementById('endDateInput').value;
             
-            document.getElementById('loadingOverlay').innerText = "Menyimpan data...";
             document.getElementById('loadingOverlay').style.display = 'flex';
             try {
-                let response = await fetch(SAVE_URL, {
+                await fetch(SCRIPT_URL, {
                     method: "POST",
+                    mode: "no-cors",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ members: members, meta: metaData })
+                    body: JSON.stringify({ action: "save", members: members, meta: metaData })
                 });
-                if (!response.ok) {
-                    throw new Error("HTTP error! status: " + response.status);
-                }
             } catch (err) {
-                console.error("Gagal menyimpan ke data.json via save.php:", err);
+                console.error(err);
             }
-            document.getElementById('loadingOverlay').innerText = "Menyinkronkan data...";
             document.getElementById('loadingOverlay').style.display = 'none';
             updateUI();
         }
