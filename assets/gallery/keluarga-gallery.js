@@ -67,7 +67,7 @@
     if (!filterBtnsEl) return;
 
     // Ordered roles for filter
-    const roleOrder = ['Ayah', 'Ibu', 'Kakek', 'Nenek'];
+    const roleOrder = ['Ayah', 'Ibu', 'Kakek', 'Nenek', 'Buyut'];
     const presentCategories = [...new Set(albums.map(a => a.category).filter(Boolean))];
     const categories = ['all', ...roleOrder.filter(r => presentCategories.includes(r)), ...presentCategories.filter(c => !roleOrder.includes(c))];
 

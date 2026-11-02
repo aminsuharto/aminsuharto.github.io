@@ -102,7 +102,7 @@ const KELUARGA_ALBUMS = [
     },
     {
         "id": "hj-pasmi-binti-harjo-lesono",
-        "title": "Hj. Pasmi Binti Harjo Leksono Karsan",
+        "title": "Hj. Pasmi Binti Harjo Lesono Karsan",
         "role": "Nenek",
         "category": "Nenek",
         "status": "Almarhumah",
@@ -119,5 +119,30 @@ const KELUARGA_ALBUMS = [
         "photos": [
             "assets/images/Keluarga/pasmi.jpg"
         ]
+    },
+    {
+        "id": "harjo-lesono-karsan",
+        "title": "Harjo Lesono Karsan",
+        "role": "Kakek Buyut",
+        "category": "Buyut",
+        "status": "Almarhum",
+        "period": "-",
+        "year": "-",
+        "spouse": "Sanem",
+        "spouseLabel": "Nama Istri",
+        "birthYear": "-",
+        "deathYear": "-",
+        "children": [
+            "Kasiran - Pasiyem",
+            "Kuslan - Tuminem",
+            "Ahmad Syukur - Sukati",
+            "Kasminah - Salamun",
+            "Ali Munawar - Umi Kalsum",
+            "Pasmi - Isman"
+        ],
+        "cover": "",
+        "detailUrl": "keluarga/harjo_lesono_karsan.html",
+        "count": 0,
+        "photos": []
     }
 ];
