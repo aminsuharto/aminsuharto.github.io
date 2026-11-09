@@ -460,5 +460,37 @@ const ALUMNI_ALBUMS = [
                        "assets/images/Mts/260705 Pandono/IMG-20260909-WA0059.jpg",
                        "assets/images/Mts/260705 Pandono/IMG-20260909-WA0060.jpg"
                    ]
+    },
+    {
+        "id":  "261108-solo",
+        "folder":  "261108 Solo",
+        "title":  "Solo",
+        "date":  "08 November 2026",
+        "year":  "2026",
+        "count":  21,
+        "cover":  "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 06.17.45.jpeg",
+        "photos":  [
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 06.17.45.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 07.44.53 (1).jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 07.51.35 (1).jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 07.51.35 (2).jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 09.19.19.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 09.23.14.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 11.30.21.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 13.07.58.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 13.07.59 (1).jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 13.07.59 (2).jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 14.32.55.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.07 (1).jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.07.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.08.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.09 (1).jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.09.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.10-1.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.11.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.12.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.13 (1).jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.14.jpeg"
+                   ]
     }
 ];
