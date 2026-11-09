@@ -1,6 +1,6 @@
 /**
  * Alumni MTs Gallery Component
- * Handles Album Grid, Category Filtering, Album View, and Fullscreen Lightbox
+ * Handles Album Grid, Category Filtering, Album View, Media Filter (Foto/Video), and Fullscreen Lightbox with Video Player
  */
 
 (function () {
@@ -9,16 +9,34 @@
   let currentAlbumIndex = 0;
   let currentPhotoIndex = 0;
   let activeFilter = 'all';
+  let activeMediaFilter = 'all'; // 'all', 'photo', 'video'
+  let displayedMediaIndices = []; // Maps filtered view index to original album.photos index
 
   // DOM Elements
   let albumsGridEl;
   let albumDetailEl;
   let filterBtnsEl;
   let albumSelectEl;
+  let detailMediaFilterEl;
   let lightboxEl;
   let lbImageEl;
+  let lbVideoEl;
   let lbInfoEl;
   let lbCounterEl;
+
+  function isVideo(url) {
+    return /\.mp4($|\?)/i.test(url);
+  }
+
+  function getPhotoCount(album) {
+    if (!album || !album.photos) return 0;
+    return album.photos.filter(url => !isVideo(url)).length;
+  }
+
+  function getVideoCount(album) {
+    if (!album || !album.photos) return 0;
+    return album.photos.filter(url => isVideo(url)).length;
+  }
 
   document.addEventListener('DOMContentLoaded', function () {
     if (typeof ALUMNI_ALBUMS === 'undefined' || !ALUMNI_ALBUMS.length) {
@@ -37,8 +55,10 @@
     albumDetailEl = document.getElementById('alumni-detail-view');
     filterBtnsEl = document.getElementById('alumni-filter-bar');
     albumSelectEl = document.getElementById('alumni-album-select');
+    detailMediaFilterEl = document.getElementById('alumni-detail-media-filter');
     lightboxEl = document.getElementById('alumni-lightbox');
     lbImageEl = document.getElementById('alumni-lb-image');
+    lbVideoEl = document.getElementById('alumni-lb-video');
     lbInfoEl = document.getElementById('alumni-lb-info');
     lbCounterEl = document.getElementById('alumni-lb-counter');
 
@@ -79,7 +99,10 @@
     if (albumSelectEl) {
       let optHtml = '<option value="">-- Pilih Album / Kegiatan --</option>';
       ALUMNI_ALBUMS.forEach((album, idx) => {
-        optHtml += `<option value="${idx}">${album.date} - ${album.title} (${album.count} Foto)</option>`;
+        const pCount = getPhotoCount(album);
+        const vCount = getVideoCount(album);
+        const countText = vCount > 0 ? `${pCount} Foto, ${vCount} Video` : `${pCount} Foto`;
+        optHtml += `<option value="${idx}">${album.date} - ${album.title} (${countText})</option>`;
       });
       albumSelectEl.innerHTML = optHtml;
 
@@ -109,14 +132,21 @@
 
     let html = '';
     albums.forEach(album => {
-      // Find original index
       const originalIdx = ALUMNI_ALBUMS.findIndex(a => a.id === album.id);
+      const pCount = getPhotoCount(album);
+      const vCount = getVideoCount(album);
+
+      let badgeHtml = `<i class="mbri-photos mbr-iconfont"></i> ${pCount} Foto`;
+      if (vCount > 0) {
+        badgeHtml += ` • <i class="mbri-video-play mbr-iconfont"></i> ${vCount} Video`;
+      }
+
       html += `
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
           <div class="alumni-album-card" data-index="${originalIdx}">
             <div class="alumni-album-cover">
               <img src="${encodeURI(album.cover)}" alt="${escapeHtml(album.title)}" loading="lazy">
-              <span class="alumni-album-badge"><i class="mbri-photos mbr-iconfont"></i> ${album.count} Foto</span>
+              <span class="alumni-album-badge">${badgeHtml}</span>
               <span class="alumni-album-year-badge">${album.year}</span>
             </div>
             <div class="alumni-album-body">
@@ -125,7 +155,7 @@
                 <i class="mbri-calendar mbr-iconfont" style="font-size: 0.9rem;"></i> ${album.date}
               </div>
               <button type="button" class="alumni-album-btn">
-                <span>Lihat Foto</span>
+                <span>Lihat Album</span>
                 <i class="mbri-arrow-next mbr-iconfont" style="font-size: 0.85rem;"></i>
               </button>
             </div>
@@ -145,10 +175,14 @@
     });
   }
 
-  function openAlbum(albumIdx) {
+  function openAlbum(albumIdx, mediaFilter) {
     if (albumIdx < 0 || albumIdx >= ALUMNI_ALBUMS.length) return;
     currentAlbumIndex = albumIdx;
+    activeMediaFilter = mediaFilter || 'all';
+
     const album = ALUMNI_ALBUMS[albumIdx];
+    const pCount = getPhotoCount(album);
+    const vCount = getVideoCount(album);
 
     // Hide albums grid, show detail view
     if (albumsGridEl) albumsGridEl.style.display = 'none';
@@ -159,38 +193,105 @@
     const titleEl = document.getElementById('alumni-detail-title');
     const infoEl = document.getElementById('alumni-detail-date');
     if (titleEl) titleEl.textContent = `${album.title}`;
-    if (infoEl) infoEl.innerHTML = `<i class="mbri-calendar mbr-iconfont"></i> ${album.date} &nbsp;•&nbsp; <i class="mbri-photos mbr-iconfont"></i> ${album.count} Foto`;
 
-    // Render photo items
-    const photoGridEl = document.getElementById('alumni-photo-grid');
-    if (photoGridEl) {
-      let html = '';
-      album.photos.forEach((photoUrl, pIdx) => {
-        html += `
-          <div class="alumni-photo-item" data-photo-idx="${pIdx}">
-            <img src="${encodeURI(photoUrl)}" alt="${escapeHtml(album.title)} Foto ${pIdx + 1}" loading="lazy">
-            <div class="alumni-photo-overlay">
-              <span class="mbri-search mbr-iconfont"></span>
-            </div>
-          </div>
-        `;
-      });
-      photoGridEl.innerHTML = html;
-
-      // Attach click to open lightbox
-      photoGridEl.querySelectorAll('.alumni-photo-item').forEach(item => {
-        item.addEventListener('click', function () {
-          const pIdx = parseInt(this.getAttribute('data-photo-idx'), 10);
-          openLightbox(pIdx);
-        });
-      });
+    let infoHtml = `<i class="mbri-calendar mbr-iconfont"></i> ${album.date} &nbsp;•&nbsp; <i class="mbri-photos mbr-iconfont"></i> ${pCount} Foto`;
+    if (vCount > 0) {
+      infoHtml += ` &nbsp;•&nbsp; <i class="mbri-video-play mbr-iconfont"></i> ${vCount} Video`;
     }
+    if (infoEl) infoEl.innerHTML = infoHtml;
+
+    // Render media sub-filter if album contains both photos and videos
+    if (detailMediaFilterEl) {
+      if (vCount > 0) {
+        detailMediaFilterEl.style.display = 'flex';
+        detailMediaFilterEl.innerHTML = `
+          <button class="alumni-media-filter-btn ${activeMediaFilter === 'all' ? 'active' : ''}" data-mfilter="all">
+            Semua (${album.photos.length})
+          </button>
+          <button class="alumni-media-filter-btn ${activeMediaFilter === 'photo' ? 'active' : ''}" data-mfilter="photo">
+            <i class="mbri-photos mbr-iconfont"></i> Foto (${pCount})
+          </button>
+          <button class="alumni-media-filter-btn ${activeMediaFilter === 'video' ? 'active' : ''}" data-mfilter="video">
+            <i class="mbri-video-play mbr-iconfont"></i> Video (${vCount})
+          </button>
+        `;
+
+        detailMediaFilterEl.querySelectorAll('.alumni-media-filter-btn').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const mfilter = this.getAttribute('data-mfilter');
+            openAlbum(albumIdx, mfilter);
+          });
+        });
+      } else {
+        detailMediaFilterEl.style.display = 'none';
+        detailMediaFilterEl.innerHTML = '';
+      }
+    }
+
+    // Render photo/video items
+    renderAlbumMedia(album);
 
     // Scroll smoothly to gallery top
     const sectionEl = document.getElementById('foto-alumni');
     if (sectionEl) {
       sectionEl.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  function renderAlbumMedia(album) {
+    const photoGridEl = document.getElementById('alumni-photo-grid');
+    if (!photoGridEl) return;
+
+    displayedMediaIndices = [];
+    album.photos.forEach((mediaUrl, idx) => {
+      const isVid = isVideo(mediaUrl);
+      if (activeMediaFilter === 'photo' && isVid) return;
+      if (activeMediaFilter === 'video' && !isVid) return;
+      displayedMediaIndices.push(idx);
+    });
+
+    if (!displayedMediaIndices.length) {
+      photoGridEl.innerHTML = '<div class="col-12 text-center text-muted py-5"><h5>Tidak ada media untuk kategori ini.</h5></div>';
+      return;
+    }
+
+    let html = '';
+    displayedMediaIndices.forEach((origIdx, viewIdx) => {
+      const mediaUrl = album.photos[origIdx];
+      const isVid = isVideo(mediaUrl);
+
+      if (isVid) {
+        html += `
+          <div class="alumni-photo-item alumni-video-item" data-view-idx="${viewIdx}">
+            <video src="${encodeURI(mediaUrl)}#t=0.5" preload="metadata" muted playsinline></video>
+            <div class="alumni-video-pill"><i class="mbri-play mbr-iconfont"></i> Video</div>
+            <div class="alumni-photo-overlay alumni-video-overlay">
+              <span class="mbri-play mbr-iconfont"></span>
+            </div>
+          </div>
+        `;
+      } else {
+        html += `
+          <div class="alumni-photo-item" data-view-idx="${viewIdx}">
+            <img src="${encodeURI(mediaUrl)}" alt="${escapeHtml(album.title)} Foto ${origIdx + 1}" loading="lazy">
+            <div class="alumni-photo-overlay">
+              <span class="mbri-search mbr-iconfont"></span>
+            </div>
+          </div>
+        `;
+      }
+    });
+
+    photoGridEl.innerHTML = html;
+
+    // Attach click to open lightbox
+    photoGridEl.querySelectorAll('.alumni-photo-item').forEach(item => {
+      item.addEventListener('click', function () {
+        const vIdx = parseInt(this.getAttribute('data-view-idx'), 10);
+        const originalPhotoIdx = displayedMediaIndices[vIdx];
+        openLightbox(originalPhotoIdx);
+      });
+    });
   }
 
   function showAlbumsGrid() {
@@ -204,51 +305,83 @@
   function openLightbox(photoIdx) {
     if (!lightboxEl) return;
     currentPhotoIndex = photoIdx;
-    updateLightboxImage();
+    updateLightboxMedia();
     lightboxEl.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 
   function closeLightbox() {
     if (!lightboxEl) return;
+    if (lbVideoEl) {
+      lbVideoEl.pause();
+      lbVideoEl.src = '';
+      lbVideoEl.style.display = 'none';
+    }
     lightboxEl.classList.remove('active');
     document.body.style.overflow = '';
   }
 
-  function updateLightboxImage() {
+  function updateLightboxMedia() {
     const album = ALUMNI_ALBUMS[currentAlbumIndex];
     if (!album || !album.photos.length) return;
 
     if (currentPhotoIndex < 0) currentPhotoIndex = album.photos.length - 1;
     if (currentPhotoIndex >= album.photos.length) currentPhotoIndex = 0;
 
-    const photoUrl = album.photos[currentPhotoIndex];
+    const mediaUrl = album.photos[currentPhotoIndex];
+    const isVid = isVideo(mediaUrl);
 
-    if (lbImageEl) {
-      lbImageEl.style.opacity = '0.4';
-      lbImageEl.src = encodeURI(photoUrl);
-      lbImageEl.onload = function () {
-        lbImageEl.style.opacity = '1';
-      };
+    // Pause any playing video first
+    if (lbVideoEl) {
+      lbVideoEl.pause();
+    }
+
+    if (isVid) {
+      if (lbImageEl) {
+        lbImageEl.style.display = 'none';
+        lbImageEl.src = '';
+      }
+      if (lbVideoEl) {
+        lbVideoEl.style.display = 'block';
+        lbVideoEl.src = encodeURI(mediaUrl);
+        lbVideoEl.play().catch(function () {});
+      }
+    } else {
+      if (lbVideoEl) {
+        lbVideoEl.style.display = 'none';
+        lbVideoEl.src = '';
+      }
+      if (lbImageEl) {
+        lbImageEl.style.display = 'block';
+        lbImageEl.style.opacity = '0.4';
+        lbImageEl.src = encodeURI(mediaUrl);
+        lbImageEl.onload = function () {
+          lbImageEl.style.opacity = '1';
+        };
+      }
     }
 
     if (lbInfoEl) {
-      lbInfoEl.innerHTML = `<strong>${escapeHtml(album.title)}</strong> (${album.date})`;
+      const typeBadge = isVid
+        ? '<span class="alumni-lb-type-badge video"><i class="mbri-play mbr-iconfont"></i> Video</span>'
+        : '<span class="alumni-lb-type-badge photo"><i class="mbri-photos mbr-iconfont"></i> Foto</span>';
+      lbInfoEl.innerHTML = `<strong>${escapeHtml(album.title)}</strong> (${album.date}) ${typeBadge}`;
     }
 
     if (lbCounterEl) {
-      lbCounterEl.textContent = `Foto ${currentPhotoIndex + 1} dari ${album.photos.length}`;
+      const typeLabel = isVid ? 'Video' : 'Foto';
+      lbCounterEl.textContent = `${typeLabel} ${currentPhotoIndex + 1} dari ${album.photos.length}`;
     }
   }
 
   function nextPhoto() {
     currentPhotoIndex++;
-    updateLightboxImage();
+    updateLightboxMedia();
   }
 
   function prevPhoto() {
     currentPhotoIndex--;
-    updateLightboxImage();
+    updateLightboxMedia();
   }
 
   function initLightboxEvents() {

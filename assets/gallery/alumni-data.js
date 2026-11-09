@@ -468,6 +468,7 @@ const ALUMNI_ALBUMS = [
         "date":  "08 November 2026",
         "year":  "2026",
         "count":  21,
+        "videoCount":  11,
         "cover":  "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 06.17.45.jpeg",
         "photos":  [
                        "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-08 at 06.17.45.jpeg",
@@ -490,7 +491,18 @@ const ALUMNI_ALBUMS = [
                        "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.11.jpeg",
                        "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.12.jpeg",
                        "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.13 (1).jpeg",
-                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.14.jpeg"
+                       "assets/images/Mts/261108 Solo/WhatsApp Image 2026-11-09 at 04.58.14.jpeg",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-08 at 09.16.14.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-08 at 10.59.05.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-08 at 13.08.38.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-08 at 13.13.11.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-08 at 13.15.59.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-08 at 21.07.27.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-09 at 04.58.05.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-09 at 04.58.06 (1).mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-09 at 04.58.06.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-09 at 04.58.10.mp4",
+                       "assets/images/Mts/261108 Solo/WhatsApp Video 2026-11-09 at 04.58.11.mp4"
                    ]
     }
 ];
